@@ -1,5 +1,5 @@
 from typing import Annotated, Literal
-from pydantic import BaseModel, ConfigDict, Field, RootModel
+from pydantic import BaseModel, ConfigDict, Field, RootModel, computed_field
 
 
 class MyBaseModel(BaseModel):
@@ -28,6 +28,11 @@ class App(MyBaseModel):
     bundle_identifier: str
     tweaks: list[Tweak] = Field(default_factory=list)
 
+    @computed_field
+    @property
+    def ipa_repo(self) -> str:
+        return f"{self.name}-ipas"
+
 
 class Tweak(MyBaseModel):
     name: str
@@ -37,6 +42,11 @@ class Tweak(MyBaseModel):
             CydiaRepoDebFile | GitHubReleasesDebFile, Field(discriminator="source")
         ]
     ] = Field(default_factory=list)
+
+    @computed_field
+    @property
+    def ipa_repo(self) -> str:
+        return f"{self.name}-ipas"
 
 
 class DebFileBase(MyBaseModel):
