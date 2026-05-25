@@ -11,5 +11,10 @@ dependencies = [
     "python-debian>=1.1.0",
 ]
 
+[project.scripts]
+tweak = "altvault.tweak:main"
+upload = "altvault.upload:main"
+
 [tool.uv]
 exclude-newer = "24 hours"
+package = true
