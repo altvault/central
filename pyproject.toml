@@ -8,6 +8,7 @@ dependencies = [
     "githubkit>=0.15.5",
     "httpx>=0.28.1",
     "pydantic>=2.13.4",
+    "python-debian>=1.1.0",
 ]
 
 [tool.uv]
