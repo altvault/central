@@ -1,11 +1,11 @@
-from altvault.shared.models import (
+from altvault.helpers.models import (
     App,
     CydiaRepoDebFile,
     GitHubReleasesDebFile,
     Recipes,
     Tweak,
 )
-from altvault.shared.config import config
+from altvault.helpers.config import config
 
 
 _recipes = [
