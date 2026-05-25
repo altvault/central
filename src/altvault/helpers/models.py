@@ -57,3 +57,21 @@ class GitHubReleasesDebFile(DebFileBase):
     owner: str
     repo: str
     tag: str = "latest"
+
+
+class AltSourceApp(MyBaseModel):
+    name: str
+    bundleIdentifier: str
+    version: str
+    localizedDescription: str
+    downloadURL: str
+    iconURL: str
+    versionDate: str
+    size: int
+
+
+class AltSourceRepo(MyBaseModel):
+    name: str
+    identifier: str
+    iconURL: str
+    apps: list[AltSourceApp]
