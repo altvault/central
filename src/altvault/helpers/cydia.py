@@ -3,6 +3,7 @@ from urllib.parse import urljoin
 
 import httpx
 from debian import deb822
+from pydantic import BaseModel
 
 from altvault.helpers.models import CydiaRepoDebFile
 from altvault.helpers.version import parse_version
@@ -16,7 +17,12 @@ def _fetch_cydia_repo(url: str) -> list[deb822.Packages]:
     return packages
 
 
-def get_cydia_package_download_link(info: CydiaRepoDebFile):
+class CydiaPackageResult(BaseModel):
+    url: str
+    version: str
+
+
+def get_cydia_package(info: CydiaRepoDebFile) -> CydiaPackageResult:
     all_packages = _fetch_cydia_repo(info.repo)
     filtered_packages = [pkg for pkg in all_packages if pkg["Package"] == info.package]
     if info.version == "latest":
@@ -32,4 +38,7 @@ def get_cydia_package_download_link(info: CydiaRepoDebFile):
                 break
     if not wanted_package:
         raise ValueError("Not found")
-    return urljoin(f"{info.repo}/", wanted_package["Filename"])
+    return CydiaPackageResult(
+        url=urljoin(f"{info.repo}/", wanted_package["Filename"]),
+        version=wanted_package["Version"],
+    )
