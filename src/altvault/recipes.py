@@ -14,11 +14,11 @@ _recipes = [
         bundle_identifier="com.christianselig.Apollo",
         tweaks=[
             Tweak(
-                name="ApolloICA",
+                name="ApolloReborn",
                 deb_files=[
                     GitHubReleasesDebFile(
-                        owner="JeffreyCA",
-                        repo="ImprovedCustomApi",
+                        owner="Apollo-Reborn",
+                        repo="Apollo-Reborn",
                         endswith="rootless.deb",
                         use_version=True,
                     )
