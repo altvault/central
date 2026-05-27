@@ -65,22 +65,22 @@ _recipes = [
         bundle_identifier="com.burbn.instagram",
         tweaks=[
             Tweak(
-                name="SCInsta",
+                name="RyukGram",
                 deb_files=[
                     GitHubReleasesDebFile(
-                        owner="SoCuul",
-                        repo="SCInsta",
+                        owner="faroukbmiled",
+                        repo="RyukGram",
                         endswith="rootless.deb",
                         use_version=True,
                     )
                 ],
             ),
             Tweak(
-                name="RyukGram",
+                name="SCInsta",
                 deb_files=[
                     GitHubReleasesDebFile(
-                        owner="faroukbmiled",
-                        repo="RyukGram",
+                        owner="SoCuul",
+                        repo="SCInsta",
                         endswith="rootless.deb",
                         use_version=True,
                     )
@@ -111,27 +111,6 @@ _recipes = [
         name="YouTube",
         bundle_identifier="com.google.ios.youtube",
         tweaks=[
-            Tweak(
-                name="YouMod",
-                deb_files=[
-                    GitHubReleasesDebFile(
-                        owner="Tonwalter888",
-                        repo="YouMod",
-                        endswith="arm64.deb",
-                        use_version=True,
-                    ),
-                    CydiaRepoDebFile(
-                        repo="https://poomsmart.github.io/repo",
-                        package="com.ps.ytvideooverlay",
-                        architecture="iphoneos-arm64",
-                    ),
-                    CydiaRepoDebFile(
-                        repo="https://poomsmart.github.io/repo",
-                        package="com.ps.youpip",
-                        architecture="iphoneos-arm64",
-                    ),
-                ],
-            ),
             Tweak(
                 name="MyYouTube",
                 deb_files=[
@@ -170,6 +149,27 @@ _recipes = [
                         owner=config.owner,
                         repo="YTStartupTab",
                         endswith="arm64.deb",
+                    ),
+                ],
+            ),
+            Tweak(
+                name="YouMod",
+                deb_files=[
+                    GitHubReleasesDebFile(
+                        owner="Tonwalter888",
+                        repo="YouMod",
+                        endswith="arm64.deb",
+                        use_version=True,
+                    ),
+                    CydiaRepoDebFile(
+                        repo="https://poomsmart.github.io/repo",
+                        package="com.ps.ytvideooverlay",
+                        architecture="iphoneos-arm64",
+                    ),
+                    CydiaRepoDebFile(
+                        repo="https://poomsmart.github.io/repo",
+                        package="com.ps.youpip",
+                        architecture="iphoneos-arm64",
                     ),
                 ],
             ),
