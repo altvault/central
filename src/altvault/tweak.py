@@ -60,7 +60,7 @@ def download_debs(tweak_config: Tweak, tmpdir: Path):
                 deb_url = _deb_info.url
                 if deb.use_version:
                     tweak_version_label = _deb_info.tag
-            with httpx.stream("GET", deb_url) as r:
+            with httpx.stream("GET", deb_url, follow_redirects=True) as r:
                 current_tweak_filepath = tmpdir / os.path.basename(
                     urlparse(deb_url).path
                 )
