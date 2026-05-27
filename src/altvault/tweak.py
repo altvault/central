@@ -36,7 +36,7 @@ def download_ipa(app_config: App, app_version: str | None, tmpdir: Path):
         owner=config.owner,
         repo=app_config.ipa_repo,
         asset_id=decrypted_app_release.parsed_data.assets[0].id,
-        headers={"Content-Type": "application/octet-stream"},
+        headers={"Accept": "application/octet-stream"},
     )
     ipa_path = tmpdir / decrypted_app_asset.parsed_data.name
     with open(ipa_path, "wb") as f:
