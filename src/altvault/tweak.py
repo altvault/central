@@ -147,7 +147,7 @@ def main():
                 *deb_paths,
             ],
             check=True,
-            cwd=tmpdirname,
+            cwd=tmpdir,
         )
 
         # custom
