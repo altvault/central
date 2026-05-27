@@ -32,13 +32,14 @@ def download_ipa(app_config: App, app_version: str | None, tmpdir: Path):
         raise Exception("decrypted_app_release not found")
     if len(decrypted_app_release.parsed_data.assets) != 1:
         raise Exception("decrypted_app_release assets != 1")
+    decrypted_app_release_first_asset = decrypted_app_release.parsed_data.assets[0]
     decrypted_app_asset = github_client.rest.repos.get_release_asset(
         owner=config.owner,
         repo=app_config.ipa_repo,
-        asset_id=decrypted_app_release.parsed_data.assets[0].id,
+        asset_id=decrypted_app_release_first_asset.id,
         headers={"Accept": "application/octet-stream"},
     )
-    ipa_path = tmpdir / decrypted_app_asset.parsed_data.name
+    ipa_path = tmpdir / decrypted_app_release_first_asset.name
     with open(ipa_path, "wb") as f:
         for chunk in decrypted_app_asset.iter_bytes():
             f.write(chunk)
