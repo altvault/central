@@ -12,6 +12,8 @@ dependencies = [
 ]
 
 [project.scripts]
+generate = "altvault.generate:main"
+outdated = "altvault.outdated:main"
 tweak = "altvault.tweak:main"
 upload = "altvault.upload:main"
 
