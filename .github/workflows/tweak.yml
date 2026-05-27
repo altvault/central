@@ -1,0 +1,52 @@
+name: Tweak App
+run-name: ${{ inputs.tweak_name }} ${{ inputs.app_version }}
+on:
+  workflow_dispatch:
+    inputs:
+      tweak_name:
+        description: tweak_name
+        required: true
+        type: choice
+        options:
+          - ApolloReborn
+          - BHTwitter
+          - FacebookGlow
+          - InfusePlus
+          - MyYoutube
+          - RyukGram
+          - SCInsta
+          - YouMod
+          - YTMusicUltimate
+      app_version:
+        description: app_version
+        required: true
+        type: string
+        default: latest
+env:
+  CYAN_SHA: 740d3716dcd98c20c000f12cdb88f1f0b2a533a4
+jobs:
+  tweak_app:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: "Set up Python"
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-suffix: cyan-${{ env.CYAN_SHA }}
+      - name: Install cyan
+        run: |
+          uv tool install git+https://github.com/asdfzxcvbn/pyzule-rw@${{ env.CYAN_SHA }}
+      - name: uv sync
+        run: |
+          uv sync --locked
+      - name: Tweak
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+          PYTHONUNBUFFERED: 1
+        run: |
+          uv run tweak ${{ inputs.tweak_name }} --app-version ${{ inputs.app_version }}
