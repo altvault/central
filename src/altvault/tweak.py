@@ -162,10 +162,10 @@ def main():
                 "%Y%m%d%H%M"
             )
         if note:
-            injected_filename = f"{app_config.name}_{ipa_version}_{tweak_config}_{tweak_version_label}_{note}.ipa"
+            injected_filename = f"{app_config.name}_{ipa_version}_{tweak_config.name}_{tweak_version_label}_{note}.ipa"
             tag_name = f"{ipa_version}_{tweak_version_label}_{note}"
         else:
-            injected_filename = f"{app_config.name}_{ipa_version}_{tweak_config}_{tweak_version_label}.ipa"
+            injected_filename = f"{app_config.name}_{ipa_version}_{tweak_config.name}_{tweak_version_label}.ipa"
             tag_name = f"{ipa_version}_{tweak_version_label}"
         release = github_client.rest.repos.create_release(
             owner=config.owner,
