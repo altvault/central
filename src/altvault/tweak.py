@@ -118,7 +118,9 @@ def main():
         ipa_path: Path
         ipa_version: str
         ipa_path, ipa_version = download_ipa(
-            app_config=app_config, app_version=args.app_version, tmpdir=tmpdir
+            app_config=app_config,
+            app_version=None if args.app_version == "latest" else args.app_version,
+            tmpdir=tmpdir,
         )
 
         print("download debs")
