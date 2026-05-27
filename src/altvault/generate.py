@@ -1,3 +1,5 @@
+from githubkit.exception import RequestFailed
+
 from altvault.helpers.config import config
 from altvault.helpers.github import create_github_client
 from altvault.helpers.models import AltSourceApp, AltSourceRepo
@@ -34,9 +36,16 @@ def generate_latest_tweaked_apps_repo():
     for app in recipes:
         for tweak in app.tweaks:
             print(f"getting latest release from {tweak.ipa_repo}")
-            _release = github_client.rest.repos.get_latest_release(
-                owner=config.owner, repo=tweak.ipa_repo
-            )
+            try:
+                _release = github_client.rest.repos.get_latest_release(
+                    owner=config.owner, repo=tweak.ipa_repo
+                )
+            except RequestFailed as e:
+                if e.response.status_code == 404:
+                    print("::warning", "latest release not found for", tweak.ipa_repo)
+                    continue
+                else:
+                    raise
             release = _release.parsed_data
             if len(release.assets) != 1:
                 print(
