@@ -65,13 +65,17 @@ async def check_app_version(client: httpx.AsyncClient, app: App):
 
     decrypted_is_outdated = (
         a_newer_than_b(appstore_version, our_decrypted_version)
-        if our_decrypted_version and app.name != "Apollo"
+        if our_decrypted_version and app.name not in ["Apollo"]
         else None
     )
 
+    # check only app version part of tweaked version
+    if our_tweaked_version and isinstance(our_tweaked_version, str):
+        our_tweaked_version = our_tweaked_version.split("_")[0]
+
     tweaked_is_outdated = (
         a_newer_than_b(appstore_version, our_tweaked_version)
-        if our_tweaked_version
+        if our_tweaked_version and app.name not in ["Apollo"]
         else None
     )
 
