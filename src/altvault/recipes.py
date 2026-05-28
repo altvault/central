@@ -88,7 +88,7 @@ _recipes = [
             ),
         ],
     ),
-    App(name="TikTok", bundle_identifier="com.zhiliaoapp.musically"),
+    # App(name="TikTok", bundle_identifier="com.zhiliaoapp.musically"),
     # App(name="TikTokGlobal", bundle_identifier="com.ss.iphone.ugc.Ame"),
     App(
         name="X",
