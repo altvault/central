@@ -24,7 +24,11 @@ class CydiaPackageResult(NamedTuple):
 
 def get_cydia_package(info: CydiaRepoDebFile) -> CydiaPackageResult:
     all_packages = _fetch_cydia_repo(info.repo)
-    filtered_packages = [pkg for pkg in all_packages if pkg["Package"] == info.package]
+    filtered_packages = [
+        pkg
+        for pkg in all_packages
+        if pkg["Package"] == info.package and pkg["Architecture"] == info.architecture
+    ]
     if info.version == "latest":
         sorted_packages = sorted(
             filtered_packages, key=lambda x: parse_version(x["Version"])
