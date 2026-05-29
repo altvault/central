@@ -1,4 +1,4 @@
-name: Tweak App
+name: 01. Tweak App
 run-name: ${{ inputs.tweak_name }} ${{ inputs.app_version }}
 on:
   workflow_dispatch:
@@ -50,3 +50,8 @@ jobs:
           PYTHONUNBUFFERED: 1
         run: |
           uv run tweak ${{ inputs.tweak_name }} --app-version ${{ inputs.app_version }}
+  json:
+    needs: tweak_app
+    uses: ./.github/workflows/json.yml
+    secrets: inherit
+

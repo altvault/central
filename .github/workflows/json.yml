@@ -1,0 +1,30 @@
+name: 02. Generate JSON
+on:
+  workflow_dispatch:
+  workflow_call:
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: "generate-limiter"
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v5
+      - name: "Set up Python"
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: uv sync
+        run: |
+          uv sync --locked
+      - name: Tweak
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+          PYTHONUNBUFFERED: 1
+        run: |
+          uv run generate
+

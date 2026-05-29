@@ -9,7 +9,6 @@ from zoneinfo import ZoneInfo
 
 import httpx
 
-from altvault.generate import generate_latest_tweaked_apps_repo
 from altvault.helpers.config import config
 from altvault.helpers.cydia import get_cydia_package
 from altvault.helpers.github import create_github_client, get_github_release_asset
@@ -180,9 +179,6 @@ def main():
                 content=f.read(),
                 headers={"Content-Type": "application/octet-stream"},
             )
-
-        print("generate")
-        generate_latest_tweaked_apps_repo()
 
 
 if __name__ == "__main__":
