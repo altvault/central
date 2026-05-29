@@ -21,10 +21,9 @@ jobs:
       - name: uv sync
         run: |
           uv sync --locked
-      - name: Tweak
+      - name: Generate
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
           PYTHONUNBUFFERED: 1
         run: |
           uv run generate
-
