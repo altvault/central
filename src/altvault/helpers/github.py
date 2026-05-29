@@ -1,9 +1,10 @@
 import os
 import subprocess
 from functools import cache
+from typing import NamedTuple
+
 from githubkit import GitHub
 from githubkit.auth import ActionAuthStrategy, TokenAuthStrategy
-from pydantic import BaseModel
 
 from altvault.helpers.config import config
 from altvault.helpers.models import GitHubReleasesDebFile
@@ -33,7 +34,7 @@ def _get_local_github_token() -> str:
     return token
 
 
-class GitHubReleaseAssetResult(BaseModel):
+class GitHubReleaseAssetResult(NamedTuple):
     url: str
     tag: str
 

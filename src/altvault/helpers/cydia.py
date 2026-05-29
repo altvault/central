@@ -1,9 +1,9 @@
 import gzip
+from typing import NamedTuple
 from urllib.parse import urljoin
 
 import httpx
 from debian import deb822
-from pydantic import BaseModel
 
 from altvault.helpers.models import CydiaRepoDebFile
 from altvault.helpers.version import parse_version
@@ -17,7 +17,7 @@ def _fetch_cydia_repo(url: str) -> list[deb822.Packages]:
     return packages
 
 
-class CydiaPackageResult(BaseModel):
+class CydiaPackageResult(NamedTuple):
     url: str
     version: str
 

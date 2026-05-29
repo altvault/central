@@ -1,14 +1,11 @@
 import plistlib
 import zipfile
+from typing import NamedTuple
 
-from pydantic import BaseModel, ConfigDict
 
-
-class ExtractedIpaMetadata(BaseModel):
+class ExtractedIpaMetadata(NamedTuple):
     bundle_identifier: str
     version: str
-
-    model_config = ConfigDict(extra="forbid", frozen=True)
 
 
 def extract_ipa_metadata(ipa_path: str) -> ExtractedIpaMetadata:
