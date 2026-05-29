@@ -85,3 +85,19 @@ class AltSourceRepo(MyBaseModel):
     identifier: str
     iconURL: str
     apps: list[AltSourceApp]
+
+
+class TweakedReleaseBodyJson_ipa(MyBaseModel):
+    file_name: str
+    version: str
+    sha256: str
+
+
+class TweakedReleaseBodyJson_deb(MyBaseModel):
+    url: str
+    sha256: str
+
+
+class TweakedReleaseBodyJson(MyBaseModel):
+    ipa: TweakedReleaseBodyJson_ipa
+    debs: list[TweakedReleaseBodyJson_deb]
