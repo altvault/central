@@ -19,7 +19,7 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="Apollo-Reborn",
                         repo="Apollo-Reborn",
-                        endswith="rootless.deb",
+                        endswith="arm.deb",
                         use_version=True,
                     )
                 ],
@@ -36,7 +36,7 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="dayanch96",
                         repo="Glow",
-                        endswith="arm64.deb",
+                        endswith="arm.deb",
                         use_version=True,
                     )
                 ],
@@ -53,7 +53,7 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="dayanch96",
                         repo="InfusePlus",
-                        endswith="arm64.deb",
+                        endswith="arm.deb",
                         use_version=True,
                     )
                 ],
@@ -70,7 +70,7 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="faroukbmiled",
                         repo="RyukGram",
-                        endswith="rootless.deb",
+                        endswith="rootful.deb",
                         use_version=True,
                     )
                 ],
@@ -81,7 +81,7 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="SoCuul",
                         repo="SCInsta",
-                        endswith="rootless.deb",
+                        endswith="rootful.deb",
                         use_version=True,
                     )
                 ],
@@ -100,7 +100,7 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="BandarHL",
                         repo="BHTwitter",
-                        endswith="arm64.deb",
+                        endswith="arm.deb",
                         use_version=True,
                     )
                 ],
@@ -117,38 +117,38 @@ _recipes = [
                     CydiaRepoDebFile(
                         repo="https://poomsmart.github.io/repo",
                         package="com.ps.ytabgoodies",
-                        architecture="iphoneos-arm64",
+                        architecture="iphoneos-arm",
                     ),
                     CydiaRepoDebFile(
                         repo="https://poomsmart.github.io/repo",
                         package="com.ps.ytx",
-                        architecture="iphoneos-arm64",
+                        architecture="iphoneos-arm",
                     ),
                     CydiaRepoDebFile(
                         repo="https://poomsmart.github.io/repo",
                         package="com.ps.ytvideooverlay",
-                        architecture="iphoneos-arm64",
+                        architecture="iphoneos-arm",
                     ),
                     CydiaRepoDebFile(
                         repo="https://poomsmart.github.io/repo",
                         package="com.ps.youpip",
-                        architecture="iphoneos-arm64",
+                        architecture="iphoneos-arm",
                     ),
                     GitHubReleasesDebFile(
                         owner="hbang",
                         repo="Alderis",
                         tag="1.2.3",
-                        endswith="arm64.deb",
+                        endswith="arm.deb",
                     ),
                     CydiaRepoDebFile(
                         repo="https://repo.icrazeios.com",
                         package="com.galacticdev.isponsorblock",
-                        architecture="iphoneos-arm64",
+                        architecture="iphoneos-arm",
                     ),
                     GitHubReleasesDebFile(
                         owner=config.owner,
                         repo="YTStartupTab",
-                        endswith="arm64.deb",
+                        endswith="arm.deb",
                     ),
                 ],
             ),
@@ -158,18 +158,18 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="Tonwalter888",
                         repo="YouMod",
-                        endswith="arm64.deb",
+                        endswith="arm.deb",
                         use_version=True,
                     ),
                     CydiaRepoDebFile(
                         repo="https://poomsmart.github.io/repo",
                         package="com.ps.ytvideooverlay",
-                        architecture="iphoneos-arm64",
+                        architecture="iphoneos-arm",
                     ),
                     CydiaRepoDebFile(
                         repo="https://poomsmart.github.io/repo",
                         package="com.ps.youpip",
-                        architecture="iphoneos-arm64",
+                        architecture="iphoneos-arm",
                     ),
                 ],
             ),
@@ -185,7 +185,7 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="dayanch96",
                         repo="YTMusicUltimate",
-                        endswith="arm64.deb",
+                        endswith="arm.deb",
                         use_version=True,
                     )
                 ],
