@@ -12,6 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
+fork = "altvault.fork:main"
 generate = "altvault.generate:main"
 outdated = "altvault.outdated:main"
 tweak = "altvault.tweak:main"
