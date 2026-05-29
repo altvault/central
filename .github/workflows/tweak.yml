@@ -12,7 +12,7 @@ on:
           - BHTwitter
           - FacebookGlow
           - InfusePlus
-          - MyYoutube
+          - MyYouTube
           - RyukGram
           - SCInsta
           - YouMod
@@ -54,4 +54,3 @@ jobs:
     needs: tweak_app
     uses: ./.github/workflows/json.yml
     secrets: inherit
-
