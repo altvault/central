@@ -1,9 +1,11 @@
 import argparse
 import datetime as dt
+import hashlib
 import os
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import NamedTuple
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
@@ -12,13 +14,28 @@ import httpx
 from altvault.helpers.config import config
 from altvault.helpers.cydia import get_cydia_package
 from altvault.helpers.github import create_github_client, get_github_release_asset
-from altvault.helpers.models import App, Tweak
+from altvault.helpers.models import (
+    App,
+    Tweak,
+    TweakedReleaseBodyJson,
+    TweakedReleaseBodyJson_deb,
+    TweakedReleaseBodyJson_ipa,
+)
 from altvault.helpers.recipes import get_tweak_config
 
 github_client = create_github_client()
 
 
-def download_ipa(app_config: App, app_version: str | None, tmpdir: Path):
+class DownloadIpaResult(NamedTuple):
+    path: Path
+    file_name: str
+    version: str
+    sha256: str
+
+
+def download_ipa(
+    app_config: App, app_version: str | None, tmpdir: Path
+) -> DownloadIpaResult:
     if app_version:
         decrypted_app_release = github_client.rest.repos.get_release_by_tag(
             owner=config.owner, repo=app_config.ipa_repo, tag=app_version
@@ -39,35 +56,62 @@ def download_ipa(app_config: App, app_version: str | None, tmpdir: Path):
         headers={"Accept": "application/octet-stream"},
     )
     ipa_path = tmpdir / decrypted_app_release_first_asset.name
+    sha256 = hashlib.sha256()
     with open(ipa_path, "wb") as f:
         for chunk in decrypted_app_asset.iter_bytes():
             f.write(chunk)
-    return ipa_path, decrypted_app_release.parsed_data.tag_name
+            sha256.update(chunk)
+    return DownloadIpaResult(
+        path=ipa_path,
+        file_name=decrypted_app_release_first_asset.name,
+        version=decrypted_app_release.parsed_data.tag_name,
+        sha256=sha256.hexdigest(),
+    )
 
 
-def download_debs(tweak_config: Tweak, tmpdir: Path):
-    deb_paths: list[Path] = []
+class DownloadDebsResultDebInfo(NamedTuple):
+    path: Path
+    url: str
+    sha256: str
+
+
+class DownloadDebsResult(NamedTuple):
+    debs: list[DownloadDebsResultDebInfo]
+    version_label: str | None = None
+
+
+def download_debs(tweak_config: Tweak, tmpdir: Path) -> DownloadDebsResult:
+    deb_list: list[DownloadDebsResultDebInfo] = []
+    version_label: str | None = None
     if tweak_config.deb_files:
         for deb in tweak_config.deb_files:
             if deb.source == "cydia_repo":
                 _deb_info = get_cydia_package(info=deb)
                 deb_url = _deb_info.url
                 if deb.use_version:
-                    tweak_version_label = _deb_info.version
+                    version_label = _deb_info.version
             elif deb.source == "github_releases":
                 _deb_info = get_github_release_asset(info=deb)
                 deb_url = _deb_info.url
                 if deb.use_version:
-                    tweak_version_label = _deb_info.tag
+                    version_label = _deb_info.tag
             with httpx.stream("GET", deb_url, follow_redirects=True) as r:
                 current_tweak_filepath = tmpdir / os.path.basename(
                     urlparse(deb_url).path
                 )
+                sha256 = hashlib.sha256()
                 with open(current_tweak_filepath, "wb") as f:
                     for chunk in r.iter_bytes():
                         f.write(chunk)
-                deb_paths.append(current_tweak_filepath)
-    return deb_paths, tweak_version_label
+                        sha256.update(chunk)
+                deb_list.append(
+                    DownloadDebsResultDebInfo(
+                        path=current_tweak_filepath,
+                        url=deb_url,
+                        sha256=sha256.hexdigest(),
+                    )
+                )
+    return DownloadDebsResult(debs=deb_list, version_label=version_label)
 
 
 def custom_apollo_reborn(tmpdir: Path, injected_path: Path):
@@ -115,20 +159,14 @@ def main():
         tmpdir: Path = Path(tmpdirname)
 
         print("download ipa")
-        ipa_path: Path
-        ipa_version: str
-        ipa_path, ipa_version = download_ipa(
+        ipa_download_result = download_ipa(
             app_config=app_config,
             app_version=None if args.app_version == "latest" else args.app_version,
             tmpdir=tmpdir,
         )
 
         print("download debs")
-        deb_paths: list[Path]
-        tweak_version_label: str | None
-        deb_paths, tweak_version_label = download_debs(
-            tweak_config=tweak_config, tmpdir=tmpdir
-        )
+        deb_download_results = download_debs(tweak_config=tweak_config, tmpdir=tmpdir)
 
         print("inject")
         injected_path: Path = tmpdir / "injected.ipa"
@@ -136,14 +174,14 @@ def main():
             [
                 "cyan",
                 "--input",
-                ipa_path,
+                ipa_download_result.path,
                 "--output",
                 injected_path,
                 # "--remove-supported-devices",
                 "--no-watch",
                 "--remove-encrypted",
                 "-f",
-                *deb_paths,
+                *[deb.path for deb in deb_download_results.debs],
             ],
             check=True,
             cwd=tmpdir,
@@ -156,20 +194,37 @@ def main():
             note = "LiquidGlass"
 
         print("upload")
+        tweak_version_label = deb_download_results.version_label
         if not tweak_version_label:
             tweak_version_label = dt.datetime.now(ZoneInfo("Asia/Bangkok")).strftime(
                 "%Y%m%d%H%M"
             )
         if note:
-            injected_filename = f"{app_config.name}_{ipa_version}_{tweak_config.name}_{tweak_version_label}_{note}.ipa"
-            tag_name = f"{ipa_version}_{tweak_version_label}_{note}"
+            injected_filename = f"{app_config.name}_{ipa_download_result.version}_{tweak_config.name}_{tweak_version_label}_{note}.ipa"
+            tag_name = f"{ipa_download_result.version}_{tweak_version_label}_{note}"
         else:
-            injected_filename = f"{app_config.name}_{ipa_version}_{tweak_config.name}_{tweak_version_label}.ipa"
-            tag_name = f"{ipa_version}_{tweak_version_label}"
+            injected_filename = f"{app_config.name}_{ipa_download_result.version}_{tweak_config.name}_{tweak_version_label}.ipa"
+            tag_name = f"{ipa_download_result.version}_{tweak_version_label}"
+
+        # release body
+        release_body_json = TweakedReleaseBodyJson(
+            ipa=TweakedReleaseBodyJson_ipa(
+                file_name=ipa_download_result.file_name,
+                version=ipa_download_result.version,
+                sha256=ipa_download_result.sha256,
+            ),
+            debs=[
+                TweakedReleaseBodyJson_deb(url=deb.url, sha256=deb.sha256)
+                for deb in deb_download_results.debs
+            ],
+        )
+        release_body = f"```json\n{release_body_json.model_dump_json(indent=2)}\n```"
+
         release = github_client.rest.repos.create_release(
             owner=config.owner,
             repo=tweak_config.ipa_repo,
             tag_name=tag_name,
+            body=release_body,
         )
         with open(injected_path, "rb") as f:
             github_client.request(
