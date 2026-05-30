@@ -150,6 +150,11 @@ _recipes = [
                         repo="YTStartupTab",
                         endswith="arm.deb",
                     ),
+                    GitHubReleasesDebFile(
+                        owner="Balackburn",
+                        repo="YTSideload",
+                        endswith="YTSideload.dylib",
+                    ),
                 ],
             ),
             Tweak(
