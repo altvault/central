@@ -70,13 +70,8 @@ _recipes = [
                     GitHubReleasesDebFile(
                         owner="faroukbmiled",
                         repo="RyukGram",
-                        endswith="rootful.deb",
+                        endswith="rootless.deb",
                         use_version=True,
-                    ),
-                    GitHubReleasesDebFile(
-                        owner="faroukbmiled",
-                        repo="RyukGram",
-                        startswith="zxPluginsInject",
                     ),
                 ],
             ),
@@ -88,11 +83,6 @@ _recipes = [
                         repo="SCInsta",
                         endswith="rootful.deb",
                         use_version=True,
-                    ),
-                    GitHubReleasesDebFile(
-                        owner="asdfzxcvbn",
-                        repo="zxPluginsInject",
-                        endswith="zxPluginsInject.dylib",
                     ),
                 ],
             ),
