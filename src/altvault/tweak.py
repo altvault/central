@@ -135,6 +135,8 @@ def custom_apollo_reborn(tmpdir: Path, injected_path: Path):
             "--output",
             patched_ipa_path,
             "--liquid-glass",
+            "--url-schemes",
+            "dystopia",
         ],
         check=True,
         cwd=tmpdir,
