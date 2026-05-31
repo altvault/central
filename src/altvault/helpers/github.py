@@ -56,10 +56,13 @@ def get_github_release_asset(
         raise ValueError("Release not found")
     assets = release.parsed_data.assets
     tag_name = release.parsed_data.tag_name.removeprefix("v")
-    if info.endswith:
-        for asset in assets:
-            if asset.name.endswith(info.endswith):
-                return GitHubReleaseAssetResult(
-                    url=asset.browser_download_url, tag=tag_name
-                )
+
+    for asset in assets:
+        if (info.startswith is None or asset.name.startswith(info.startswith)) and (
+            info.endswith is None or asset.name.endswith(info.endswith)
+        ):
+            return GitHubReleaseAssetResult(
+                url=asset.browser_download_url, tag=tag_name
+            )
+
     return GitHubReleaseAssetResult(url=assets[0].browser_download_url, tag=tag_name)

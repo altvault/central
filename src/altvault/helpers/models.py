@@ -50,7 +50,6 @@ class Tweak(MyBaseModel):
 
 
 class DebFileBase(MyBaseModel):
-    endswith: str | None = None
     use_version: bool = False
 
 
@@ -67,6 +66,8 @@ class GitHubReleasesDebFile(DebFileBase):
     owner: str
     repo: str
     tag: str = "latest"
+    startswith: str | None = None
+    endswith: str | None = None
 
 
 class AltSourceApp(MyBaseModel):
