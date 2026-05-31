@@ -201,16 +201,18 @@ def main():
             tweak_version_label = dt.datetime.now(ZoneInfo("Asia/Bangkok")).strftime(
                 "%Y%m%d%H%M"
             )
+        # custom (ApolloReborn puts app_version in their tag_name so prevent duplication)
+        if tweak_version_label.startswith(f"{ipa_download_result.version}_"):
+            tweak_version_label = tweak_version_label.removeprefix(
+                f"{ipa_download_result.version}_"
+            )
+
         if note:
             injected_filename = f"{app_config.name}_{ipa_download_result.version}_{tweak_config.name}_{tweak_version_label}_{note}.ipa"
             tag_name = f"{ipa_download_result.version}_{tweak_version_label}_{note}"
         else:
             injected_filename = f"{app_config.name}_{ipa_download_result.version}_{tweak_config.name}_{tweak_version_label}.ipa"
             tag_name = f"{ipa_download_result.version}_{tweak_version_label}"
-
-        # custom (ApolloReborn puts app_version in their tag_name so prevent duplication)
-        if tweak_version_label.startswith(f"{ipa_download_result.version}_"):
-            tag_name = tag_name.removeprefix(f"{ipa_download_result.version}_")
 
         # release body
         release_body_json = TweakedReleaseBodyJson(
