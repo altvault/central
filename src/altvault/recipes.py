@@ -72,7 +72,12 @@ _recipes = [
                         repo="RyukGram",
                         endswith="rootful.deb",
                         use_version=True,
-                    )
+                    ),
+                    GitHubReleasesDebFile(
+                        owner="asdfzxcvbn",
+                        repo="zxPluginsInject",
+                        endswith="zxPluginsInject.dylib",
+                    ),
                 ],
             ),
             Tweak(
@@ -83,7 +88,12 @@ _recipes = [
                         repo="SCInsta",
                         endswith="rootful.deb",
                         use_version=True,
-                    )
+                    ),
+                    GitHubReleasesDebFile(
+                        owner="asdfzxcvbn",
+                        repo="zxPluginsInject",
+                        endswith="zxPluginsInject.dylib",
+                    ),
                 ],
             ),
         ],
