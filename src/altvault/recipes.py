@@ -74,9 +74,9 @@ _recipes = [
                         use_version=True,
                     ),
                     GitHubReleasesDebFile(
-                        owner="asdfzxcvbn",
-                        repo="zxPluginsInject",
-                        endswith="zxPluginsInject.dylib",
+                        owner="faroukbmiled",
+                        repo="RyukGram",
+                        startswith="zxPluginsInject",
                     ),
                 ],
             ),
