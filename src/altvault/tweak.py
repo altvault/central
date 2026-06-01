@@ -194,6 +194,13 @@ def main():
             print("custom: apollo reborn patch")
             custom_apollo_reborn(tmpdir=tmpdir, injected_path=injected_path)
             note = "LiquidGlass"
+        elif tweak_config.name in ["RyukGram", "SCInsta"]:
+            print(f"custom: {tweak_config.name} ipapatch")
+            subprocess.run(
+                ["ipapatch", "--input", injected_path, "--inplace", "--noconfirm"],
+                check=True,
+            )
+            note = "IPAPatched"
 
         print("upload")
         tweak_version_label = deb_download_results.version_label
