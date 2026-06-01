@@ -30,6 +30,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Install dpkg
+        run: brew install dpkg
       - name: "Set up Python"
         uses: actions/setup-python@v6
         with:

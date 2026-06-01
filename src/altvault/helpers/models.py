@@ -51,6 +51,7 @@ class Tweak(MyBaseModel):
 
 class DebFileBase(MyBaseModel):
     use_version: bool = False
+    extract: list[str] = Field(default_factory=list)
 
 
 class CydiaRepoDebFile(DebFileBase):

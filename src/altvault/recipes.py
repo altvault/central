@@ -72,6 +72,7 @@ _recipes = [
                         repo="RyukGram",
                         endswith="rootless.deb",
                         use_version=True,
+                        extract=["RyukGram.dylib", "RyukGram.bundle"],
                     ),
                 ],
             ),

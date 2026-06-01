@@ -104,13 +104,52 @@ def download_debs(tweak_config: Tweak, tmpdir: Path) -> DownloadDebsResult:
                     for chunk in r.iter_bytes():
                         f.write(chunk)
                         sha256.update(chunk)
-                deb_list.append(
-                    DownloadDebsResultDebInfo(
-                        path=current_tweak_filepath,
-                        url=deb_url,
-                        sha256=sha256.hexdigest(),
+                if (
+                    tweak_config.name == "RyukGram"
+                    and deb.extract
+                    and len(deb.extract) > 0
+                ):
+                    extract_folder = tmpdir / current_tweak_filepath.stem
+                    extract_folder.mkdir()
+                    subprocess.run(
+                        [
+                            "dpkg-deb",
+                            "-x",
+                            str(current_tweak_filepath),
+                            str(extract_folder),
+                        ],
+                        check=True,
                     )
-                )
+                    for item_to_extract in deb.extract:
+                        if item_to_extract.endswith(".bundle"):
+                            hits = [
+                                p
+                                for p in extract_folder.rglob(item_to_extract)
+                                if p.is_dir()
+                            ]
+                        else:
+                            hits = [
+                                p
+                                for p in extract_folder.rglob(item_to_extract)
+                                if p.is_file()
+                            ]
+                        if not hits:
+                            raise FileNotFoundError(
+                                f"{item_to_extract} not found in {current_tweak_filepath.name}"
+                            )
+                        deb_list.append(
+                            DownloadDebsResultDebInfo(
+                                path=hits[0], url=deb_url, sha256=sha256.hexdigest()
+                            )
+                        )
+                else:
+                    deb_list.append(
+                        DownloadDebsResultDebInfo(
+                            path=current_tweak_filepath,
+                            url=deb_url,
+                            sha256=sha256.hexdigest(),
+                        )
+                    )
     return DownloadDebsResult(debs=deb_list, version_label=version_label)
 
 
