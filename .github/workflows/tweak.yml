@@ -24,6 +24,7 @@ on:
         default: latest
 env:
   CYAN_SHA: 740d3716dcd98c20c000f12cdb88f1f0b2a533a4
+  IPAPATCH_VERSION: v2.1.3
 jobs:
   tweak_app:
     runs-on: macos-latest
@@ -44,6 +45,10 @@ jobs:
       - name: uv sync
         run: |
           uv sync --locked
+      - name: Install ipapatch
+        run: |
+          curl -fLo ipapatch https://github.com/asdfzxcvbn/ipapatch/releases/download/${{ env.IPAPATCH_VERSION }}/ipapatch.macos-arm64
+          chmod u+x ipapatch
       - name: Tweak
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
