@@ -197,8 +197,9 @@ def main():
         elif tweak_config.name in ["RyukGram", "SCInsta"]:
             print(f"custom: {tweak_config.name} ipapatch")
             subprocess.run(
-                ["ipapatch", "--input", injected_path, "--inplace", "--noconfirm"],
+                ["./ipapatch", "--input", injected_path, "--inplace", "--noconfirm"],
                 check=True,
+                cwd=os.environ["GITHUB_WORKSPACE"],
             )
             note = "IPAPatched"
 
