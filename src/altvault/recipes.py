@@ -73,11 +73,6 @@ _recipes = [
                         endswith="rootless.deb",
                         use_version=True,
                     ),
-                    GitHubReleasesDebFile(
-                        owner="faroukbmiled",
-                        repo="RyukGram",
-                        startswith="zxPluginsInject",
-                    ),
                 ],
             ),
             Tweak(
