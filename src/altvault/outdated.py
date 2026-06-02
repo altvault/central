@@ -132,12 +132,10 @@ async def amain():
             ):
                 telegram_bot = (
                     "FastDecryptBot"
-                    if outdated_app in ["Instagram", "TikTok"]
+                    if outdated_app.name in ["Instagram", "TikTok"]
                     else "eeveedecrypterbot"
                 )
-                telegram_link = (
-                    f"tg://resolve?domain={telegram_bot}&text={result.appstore_url}"
-                )
+                telegram_link = f"tg://resolve?domain={telegram_bot}&text={outdated_app.appstore_url}"
                 subprocess.run(["open", telegram_link], check=True)
         print(LINE_SEPARATOR)
 
