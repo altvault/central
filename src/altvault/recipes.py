@@ -125,6 +125,16 @@ _recipes = [
                         package="com.ps.ytx",
                         architecture="iphoneos-arm",
                     ),
+                    CydiaRepoDebFile(
+                        repo="https://poomsmart.github.io/repo",
+                        package="com.ps.ytvideooverlay",
+                        architecture="iphoneos-arm",
+                    ),
+                    CydiaRepoDebFile(
+                        repo="https://poomsmart.github.io/repo",
+                        package="com.ps.youpip",
+                        architecture="iphoneos-arm",
+                    ),
                     GitHubReleasesDebFile(
                         owner="hbang",
                         repo="Alderis",
