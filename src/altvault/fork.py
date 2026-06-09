@@ -9,6 +9,12 @@ from altvault.helpers.github import create_github_client
 github_client = create_github_client()
 CONCURRENCY_LIMIT: int = 5
 
+RESET = "\x1b[0m"
+GRAY = "\x1b[0;38;5;244;49m"
+RED = "\x1b[0;31;49m"
+YELLOW = "\x1b[0;33;49m"
+PINK = "\x1b[0;35;49m"
+
 
 class CheckResult(NamedTuple):
     url: str
@@ -24,6 +30,7 @@ async def check_behind(minimal_repo: MinimalRepository, sem: asyncio.Semaphore):
                 owner=minimal_repo.owner.login, repo=minimal_repo.name
             )
         ).parsed_data
+        print(f"{GRAY}.{RESET}", end="", flush=True)
         parent = repo.parent
         if parent:
             base = f"{parent.owner.login}:{parent.default_branch}"
@@ -34,6 +41,7 @@ async def check_behind(minimal_repo: MinimalRepository, sem: asyncio.Semaphore):
                 )
             ).parsed_data
 
+            print(f"{GRAY}.{RESET}", end="", flush=True)
             return CheckResult(
                 url=repo.html_url,
                 status=compared.status,
@@ -52,23 +60,24 @@ async def amain():
             per_page=100,
         )
     ]
-    print(len(forks), "forks")
+    print(GRAY, len(forks), "forks", RESET)
 
     sem = asyncio.Semaphore(CONCURRENCY_LIMIT)
     tasks = [check_behind(repo, sem) for repo in forks]
     results = await asyncio.gather(*tasks)
 
+    print()
     results.sort(key=lambda x: (x.status, x.url))
     for item in results:
         match item.status:
             case "identical":
-                print("\x1b[0;38;5;244;49m", item.status, item.url, "\x1b[0m")
+                print(GRAY, item.status, item.url, RESET)
             case "behind":
-                print("\x1b[0;31;49m", item.status, item.behind_by, item.url, "\x1b[0m")
+                print(RED, item.status, item.behind_by, item.url, RESET)
             case "ahead":
-                print("\x1b[0;33;49m", item.status, item.ahead_by, item.url, "\x1b[0m")
+                print(YELLOW, item.status, item.ahead_by, item.url, RESET)
             case "diverged":
-                print("\x1b[0;35;49m", item.status, item.url, "\x1b[0m")
+                print(PINK, item.status, item.url, RESET)
 
 
 def main():
