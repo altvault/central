@@ -156,6 +156,11 @@ _recipes = [
                         repo="YTSideload",
                         endswith="YTSideload.dylib",
                     ),
+                    GitHubReleasesDebFile(
+                        owner="arichornlover",
+                        repo="YTAppVersionSpoofer",
+                        endswith="arm.deb",
+                    ),
                 ],
             ),
             Tweak(
